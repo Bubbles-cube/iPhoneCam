@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2:美顏列/面板整組刪除（引擎從沒存在過）。其餘沿用 v1 免捲動權重佈局。 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0D0D24">
+
+    <!-- 頂列 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+        <TextView android:text="🐰" android:textSize="22sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <TextView android:text=" 泡泡直播助手"
+            android:textColor="#FF5FD2" android:textSize="20sp" android:textStyle="bold"
+            android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- 內容區（權重撐滿各種螢幕，不捲動） -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="12dp">
+
+            <!-- 首頁 -->
+            <LinearLayout android:id="@+id/pageHome"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- 預覽卡（撐滿剩餘空間；預覽視圖 match_parent，尺寸永遠＝畫框） -->
+                <LinearLayout android:background="@drawable/card_bg"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:padding="10dp">
+                    <LinearLayout android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+                        <TextView android:id="@+id/liveBadge" android:text="● LIVE"
+                            android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold"
+                            android:background="@drawable/btn_gradient"
+                            android:paddingLeft="10dp" android:paddingRight="10dp"
+                            android:paddingTop="2dp" android:paddingBottom="2dp"
+                            android:visibility="invisible"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                        <TextView android:id="@+id/liveFps" android:text=" 720P 30FPS"
+                            android:textColor="#9AA3C0" android:textSize="12sp" android:fontFamily="monospace"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <FrameLayout android:id="@+id/previewFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="6dp">
+                        <TextureView android:id="@+id/preview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                        <ImageView android:id="@+id/standbyView"
+                            android:src="@drawable/standby"
+                            android:scaleType="centerCrop"
+                            android:background="#12122A"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </FrameLayout>
+                    <TextView android:id="@+id/status"
+                        android:text="未廣播" android:textColor="#9AA3C0"
+                        android:textSize="11sp" android:fontFamily="monospace"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <!-- 連線卡 -->
+                <LinearLayout android:background="@drawable/card_bg"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:gravity="center_vertical">
+                    <TextView android:text="●" android:id="@+id/connDot"
+                        android:textColor="#555577" android:textSize="16sp"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    <LinearLayout android:orientation="vertical"
+                        android:layout_width="0dp" android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp">
+                        <TextView android:id="@+id/connTitle" android:text="等待 PC 連接…"
+                            android:textColor="#FFFFFF" android:textSize="14sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                        <TextView android:id="@+id/connIp" android:text="本機 IP：-"
+                            android:textColor="#9AA3C0" android:textSize="12sp" android:fontFamily="monospace"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <TextView android:text="待機" android:id="@+id/connSig"
+                        android:textColor="#555577" android:textSize="12sp"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- 功能列 -->
+                <LinearLayout android:id="@+id/funcCard" android:background="@drawable/card_bg"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="4dp">
+                    <LinearLayout android:id="@+id/resRow"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:gravity="center_vertical">
+                        <TextView android:text="🎞 輸出解析度"
+                            android:textColor="#FFFFFF" android:textSize="14sp"
+                            android:layout_width="0dp" android:layout_weight="1"
+                            android:layout_height="wrap_content" />
+                        <TextView android:id="@+id/resVal" android:text="720P ＞"
+                            android:textColor="#9AA3C0" android:textSize="13sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/fpsRow"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:gravity="center_vertical">
+                        <TextView android:text="⏱ 輸出FPS"
+                            android:textColor="#FFFFFF" android:textSize="14sp"
+                            android:layout_width="0dp" android:layout_weight="1"
+                            android:layout_height="wrap_content" />
+                        <TextView android:id="@+id/fpsVal" android:text="30FPS ＞"
+                            android:textColor="#9AA3C0" android:textSize="13sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/camRow"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:gravity="center_vertical">
+                        <TextView android:text="📷 鏡頭切換"
+                            android:textColor="#FFFFFF" android:textSize="14sp"
+                            android:layout_width="0dp" android:layout_weight="1"
+                            android:layout_height="wrap_content" />
+                        <TextView android:id="@+id/camVal" android:text="後鏡頭 ＞"
+                            android:textColor="#9AA3C0" android:textSize="13sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 開播大鈕 -->
+                <Button android:id="@+id/btnToggle" android:text="（（•）） 開始直播"
+                    android:background="@drawable/btn_gradient"
+                    android:textColor="#FFFFFF" android:textSize="16sp" android:textStyle="bold"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:paddingTop="12dp" android:paddingBottom="12dp" />
+            </LinearLayout>
+
+            <!-- 設定頁 -->
+            <LinearLayout android:id="@+id/pageSettings"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <LinearLayout android:background="@drawable/card_bg"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+                    <TextView android:text="碼率（Mbps，改完立即重編）"
+                        android:textColor="#FFFFFF" android:textSize="14sp"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    <LinearLayout android:orientation="horizontal"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+                        <SeekBar android:id="@+id/bitrateSeek"
+                            android:layout_width="0dp" android:layout_weight="1"
+                            android:layout_height="wrap_content" android:max="39" android:progress="3" />
+                        <TextView android:id="@+id/bitrateVal" android:text="4M"
+                            android:textColor="#FFFFFF" android:textSize="14sp" android:fontFamily="monospace"
+                            android:layout_width="48dp" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <TextView android:id="@+id/verText" android:text="版本 v2.0 · CAM1+CUM1 · 4:3 原生"
+                        android:textColor="#9AA3C0" android:textSize="12sp"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 幫助頁 -->
+            <LinearLayout android:id="@+id/pageHelp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <LinearLayout android:background="@drawable/card_bg"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+                    <TextView android:text="使用方式"
+                        android:textColor="#FF5FD2" android:textSize="15sp" android:textStyle="bold"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    <TextView android:text="1. 手機跟電腦連同一個 Wi-Fi\n2. 按開始直播（螢幕會保持亮著）\n3. 電腦開 PC 端按開始直播，畫面就進來了\n4. OBS 新增視訊來源選 iPhoneCam 即可播出"
+                        android:textColor="#9AA3C0" android:textSize="13sp"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    <!-- 底導航 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+        <Button android:id="@+id/navHome" android:text="🏠 首頁"
+            android:background="@drawable/btn_dark" android:textColor="#FF5FD2"
+            android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <Button android:id="@+id/navSettings" android:text="⚙ 設定"
+            android:background="@drawable/btn_dark" android:textColor="#9AA3C0"
+            android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <Button android:id="@+id/navHelp" android:text="ⓘ 幫助"
+            android:background="@drawable/btn_dark" android:textColor="#9AA3C0"
+            android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

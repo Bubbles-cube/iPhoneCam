@@ -1,0 +1,13 @@
+# build outputs (any level)
+**/[Bb]in/
+**/[Oo]bj/
+**/build/
+.gradle/
+*.apk
+*.aab
+# IDE / OS
+.vs/
+.idea/
+*.user
+Thumbs.db
+Desktop.ini
