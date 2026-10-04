@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="PcApp/PcApp.csproj" />
+  <Project Path="PcNet/PcNet.csproj" />
+  <Project Path="VirtualCam/VirtualCam.csproj" />
+</Solution>

@@ -1,0 +1,236 @@
+<Window x:Class="PcApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="泡泡直播助手 🐰" Height="740" Width="1120" Icon="assets/icon.ico"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="NoResize">
+    <!-- v2:濾鏡頁/美顏整組刪除。右面板只剩：影像設定（兩檔下拉）＋進階。 -->
+    <Window.Resources>
+        <LinearGradientBrush x:Key="NeonBorder" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#35D6FF" Offset="0"/>
+            <GradientStop Color="#FF5FD2" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="PinkPurple" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#FF5FD2" Offset="0"/>
+            <GradientStop Color="#8B5CF6" Offset="1"/>
+        </LinearGradientBrush>
+        <Style x:Key="NeonButton" TargetType="Button">
+            <Setter Property="Background" Value="#1A1A35"/>
+            <Setter Property="Foreground" Value="#35D6FF"/>
+            <Setter Property="BorderBrush" Value="#35D6FF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="GoButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PinkPurple}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#9AA3C0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,9"/>
+            <Setter Property="Margin" Value="6,2"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="TabButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#9AA3C0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="DarkCombo" TargetType="ComboBox">
+            <Setter Property="Background" Value="#12122A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#35D6FF"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+    </Window.Resources>
+    <Border BorderBrush="{StaticResource NeonBorder}" BorderThickness="2" CornerRadius="12"
+            Margin="8" Padding="0" Background="#0D0D24" MouseLeftButtonDown="Border_Drag">
+        <DockPanel>
+            <!-- 頂列 -->
+            <DockPanel DockPanel.Dock="Top" Margin="16,10,16,6">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button x:Name="BtnMin" Content="—" Style="{StaticResource NeonButton}"
+                            Padding="10,2" Click="BtnMin_Click" ToolTip="最小化"/>
+                    <Button x:Name="BtnClose" Content="✕" Style="{StaticResource NeonButton}"
+                            Padding="10,2" Click="BtnClose_Click" ToolTip="關閉（相機跟著下線）"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="🐰" FontSize="22" VerticalAlignment="Center"/>
+                    <TextBlock Text=" 泡泡直播助手" Foreground="#FF5FD2" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="  · PC 端 v2" Foreground="#9AA3C0" FontSize="13" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="TxtHeadConn" Text="   ○ 未連接手機" Foreground="#9AA3C0" FontSize="13" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                </StackPanel>
+            </DockPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!-- 左導航 -->
+                <StackPanel Grid.Column="0" Margin="8,0,4,12">
+                    <Button x:Name="NavHome" Content="🏠 主畫面" Style="{StaticResource NavButton}" Click="Nav_Click" Tag="Home"/>
+                    <Button x:Name="NavDevices" Content="📱 裝置管理" Style="{StaticResource NavButton}" Click="Nav_Click" Tag="Devices"/>
+                    <Button x:Name="NavSettings" Content="🔧 設定" Style="{StaticResource NavButton}" Click="Nav_Click" Tag="Settings"/>
+                    <Button x:Name="NavAbout" Content="ⓘ 關於" Style="{StaticResource NavButton}" Click="Nav_Click" Tag="About"/>
+                    <TextBlock x:Name="TxtStatus" Text="相機：未啟動" Foreground="#9AA3C0" FontSize="11"
+                               FontFamily="Consolas" TextWrapping="Wrap" Margin="10,16,4,0"/>
+                </StackPanel>
+                <!-- 主儀表板 -->
+                <Grid x:Name="PageHome" Grid.Column="1" Margin="4,0,12,12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="132"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="252"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- 預覽 -->
+                    <Border Grid.Row="0" Grid.Column="0" Background="Black" BorderBrush="#35D6FF"
+                            BorderThickness="1" CornerRadius="8" Margin="0,0,8,8">
+                        <Grid>
+                            <Image x:Name="ImgPreview" Stretch="Uniform"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="8,6,0,0">
+                                <Border Background="{StaticResource PinkPurple}" CornerRadius="4" Padding="8,2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock x:Name="TxtLive" Text="● LIVE" Foreground="White" FontSize="12"
+                                                   FontWeight="Bold" Visibility="Collapsed"/>
+                                    </StackPanel>
+                                </Border>
+                                <TextBlock x:Name="TxtPreview" Text="等串流…" Foreground="White" FontSize="12"
+                                           FontFamily="Consolas" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,6,8,0">
+                                <Button x:Name="BtnSnap" Content="📷" Style="{StaticResource NeonButton}" Padding="6,2"
+                                        Click="BtnSnap_Click" ToolTip="截圖存到 _captures"/>
+                                <Button x:Name="BtnMax" Content="⛶" Style="{StaticResource NeonButton}" Padding="6,2"
+                                        Click="BtnMax_Click" ToolTip="最大化／還原"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <!-- 右參數面板 -->
+                    <Border Grid.Row="0" Grid.Column="1" Background="#12122A" BorderBrush="#2A2A4A"
+                            BorderThickness="1" CornerRadius="8" Margin="0,0,0,8" Padding="10">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,6">
+                                <Button x:Name="TabVideo" Content="影像設定" Style="{StaticResource TabButton}" Click="Tab_Click" Tag="Video"/>
+                                <Button x:Name="TabAdv" Content="進階設定" Style="{StaticResource TabButton}" Click="Tab_Click" Tag="Adv"/>
+                            </StackPanel>
+                            <!-- 影像設定頁 -->
+                            <StackPanel x:Name="PanelVideo">
+                                <TextBlock Text="解析度" Foreground="#9AA3C0" FontSize="12"/>
+                                <ComboBox x:Name="CmbRes" Style="{StaticResource DarkCombo}" SelectionChanged="CmbResFps_Changed">
+                                    <ComboBoxItem Content="720P (960 × 720)"/>
+                                    <ComboBoxItem Content="1080P (1440 × 1080)"/>
+                                </ComboBox>
+                                <TextBlock Text="FPS" Foreground="#9AA3C0" FontSize="12" Margin="0,6,0,0"/>
+                                <ComboBox x:Name="CmbFps" Style="{StaticResource DarkCombo}" SelectionChanged="CmbResFps_Changed">
+                                    <ComboBoxItem Content="30 FPS"/>
+                                    <ComboBoxItem Content="60 FPS"/>
+                                </ComboBox>
+                                <TextBlock Text="H.264 · 4:3 原生 · UDP 影像" Foreground="#9AA3C0" FontSize="11"
+                                           TextWrapping="Wrap" Margin="0,10,0,0"/>
+                            </StackPanel>
+                            <!-- 進階設定頁 -->
+                            <StackPanel x:Name="PanelAdv" Visibility="Collapsed">
+                                <Button x:Name="BtnIdr" Content="立即要一幀（IDR）" Style="{StaticResource NeonButton}" Click="BtnIdr_Click"/>
+                                <Button x:Name="BtnRestartEnc" Content="重啟手機編碼" Style="{StaticResource NeonButton}" Click="BtnRestartEnc_Click" ToolTip="手機不出幀（凍結／低幀率）時，遠端重啟手機編碼器"/>
+                                <Button x:Name="BtnSave" Content="存檔：關" Style="{StaticResource NeonButton}" Click="BtnSave_Click"/>
+                                <CheckBox x:Name="ChkSoftDec" Content="強制軟解（重連生效）" Foreground="#9AA3C0" FontSize="12" Margin="4,6,0,0"
+                                          Checked="ChkSoftDec_Changed" Unchecked="ChkSoftDec_Changed"/>
+                                <TextBlock x:Name="TxtDecMode" Text="解碼：－" Foreground="#35D6FF" FontSize="12" FontFamily="Consolas" Margin="4,6,0,0"/>
+                                <TextBlock x:Name="TxtStats" Text="幀：-" Foreground="#9AA3C0" FontSize="11" FontFamily="Consolas" Margin="4,6,0,0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <!-- 底卡片 -->
+                    <Border Grid.Row="1" Grid.Column="0" Background="#12122A" BorderBrush="#2A2A4A"
+                            BorderThickness="1" CornerRadius="8" Margin="0,0,8,0" Padding="10,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="📱 手機" Foreground="White" FontSize="13" FontWeight="Bold"/>
+                                <TextBlock x:Name="TxtPhone" Text="未連線" Foreground="#9AA3C0" FontSize="12" FontFamily="Consolas"/>
+                                <TextBlock x:Name="TxtNet" Text="接收：未連線" Foreground="#9AA3C0" FontSize="12" FontFamily="Consolas" TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="🎬 直播軟體" Foreground="White" FontSize="13" FontWeight="Bold"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="OBS" Style="{StaticResource NeonButton}" Click="BtnObs_Click" ToolTip="開啟／切到 OBS"/>
+                                    <Button Content="Twitch" Style="{StaticResource NeonButton}" Click="Platform_Click" Tag="https://www.twitch.tv/"/>
+                                    <Button Content="YouTube" Style="{StaticResource NeonButton}" Click="Platform_Click" Tag="https://www.youtube.com/"/>
+                                    <Button Content="抖音" Style="{StaticResource NeonButton}" Click="Platform_Click" Tag="https://www.douyin.com/"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" Background="#12122A" BorderBrush="#2A2A4A"
+                            BorderThickness="1" CornerRadius="8" Padding="10,8">
+                        <StackPanel>
+                            <TextBlock Text="⚡ 快速操作" Foreground="White" FontSize="13" FontWeight="Bold"/>
+                            <Button x:Name="BtnGo" Content="（（•）） 開始直播" Style="{StaticResource GoButton}" Click="BtnGo_Click"/>
+                            <Button x:Name="BtnStopLive" Content="◯ 停止直播" Style="{StaticResource NeonButton}" Click="BtnStopLive_Click"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <!-- 子頁面 -->
+                <Grid x:Name="PageSub" Grid.Column="1" Margin="4,0,12,12" Visibility="Collapsed">
+                    <Border Background="#12122A" BorderBrush="#2A2A4A" BorderThickness="1" CornerRadius="8" Padding="14">
+                        <StackPanel>
+                            <TextBlock x:Name="TxtPageTitle" Text="設定" Foreground="#FF5FD2" FontSize="18" FontWeight="Bold"/>
+                            <!-- 裝置管理 -->
+                            <StackPanel x:Name="PageDevices" Visibility="Collapsed">
+                                <TextBlock Text="無線裝置（手機開 App 廣播後出現）" Foreground="#9AA3C0" FontSize="12" Margin="0,8,0,2"/>
+                                <ListBox x:Name="LstPhones" Height="110" Background="#0D0D24" Foreground="#35D6FF"
+                                         FontFamily="Consolas" FontSize="12" BorderBrush="#35D6FF"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="BtnConnect" Content="連線" Style="{StaticResource NeonButton}" Click="BtnConnect_Click"/>
+                                    <Button x:Name="BtnDisconnect" Content="中斷" Style="{StaticResource NeonButton}" Click="BtnDisconnect_Click" IsEnabled="False"/>
+                                </StackPanel>
+                                <DockPanel Margin="0,4,0,0">
+                                    <Button x:Name="BtnManual" Content="連 IP" Style="{StaticResource NeonButton}" Click="BtnManual_Click" DockPanel.Dock="Right"/>
+                                    <TextBox x:Name="TxtIp" Background="#0D0D24" Foreground="#35D6FF" FontFamily="Consolas"
+                                             FontSize="12" BorderBrush="#35D6FF" VerticalContentAlignment="Center"/>
+                                </DockPanel>
+                            </StackPanel>
+                            <!-- 設定 -->
+                            <StackPanel x:Name="PageSettings" Visibility="Collapsed">
+                                <TextBlock Text="解碼器由系統自動選擇（D3D11VA 硬解優先，失敗退軟解）。" Foreground="#9AA3C0" FontSize="12" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                                <TextBlock Text="錄影存到 iPhoneCamV2/_captures，截圖存到 _captures/snap-*.png。" Foreground="#9AA3C0" FontSize="12" TextWrapping="Wrap"/>
+                                <TextBlock Text="關閉本程式＝虛擬相機下線。" Foreground="#9AA3C0" FontSize="12"/>
+                            </StackPanel>
+                            <!-- 關於 -->
+                            <StackPanel x:Name="PageAbout" Visibility="Collapsed">
+                                <TextBlock Text="泡泡直播助手 PC 端 v2（MVP）" Foreground="White" FontSize="13" Margin="0,8,0,0"/>
+                                <TextBlock Text="手機鏡頭 → Wi-Fi → PC 虛擬攝像頭 → OBS／Discord。影像走 UDP（CUM1），控制走 CAM1；H.264，720P／1080P（4:3 原生），30／60 FPS。" Foreground="#9AA3C0" FontSize="12" TextWrapping="Wrap"/>
+                                <Button x:Name="BtnDiag" Content="複製診斷" Style="{StaticResource NeonButton}" Click="BtnDiag_Click" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </DockPanel>
+    </Border>
+</Window>
